@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMove : MonoBehaviour
 {
     public float speed; // Speed of movement
-    public float boundaryX = 25f; // X-coordinate boundary
+    public float boundaryX = 15f; // X-coordinate boundary
 
     private bool movingRight = true; // Initial movement direction
 
