@@ -25,6 +25,11 @@ public class PlayerScript : MonoBehaviour
     public float fireRate = 1f; // Rate of fire in shots per second
     private float nextFireTime; // Time until the next shot can be fired
 
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+
     void Update()
     {
         PlayerMove();
@@ -43,10 +48,27 @@ public class PlayerScript : MonoBehaviour
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
-        /// <summary>
-        /// This will enable the player to move along the x axis using a and d keys
-        /// </summary>
-        private void PlayerMove()
+
+    /// <summary>
+    /// This will cause player to teleport back to the startPos, lose a life, and eventually go to game over
+    /// </summary>
+    private void LoseLife()
+    {
+        lives--;
+
+        Debug.Log("Remaining Lives: " + lives);
+
+        //add game over
+        if (lives <= 0)
+        {
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    /// <summary>
+    /// This will enable the player to move along the x axis using a and d keys
+    /// </summary>
+    private void PlayerMove()
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {
@@ -73,5 +95,21 @@ public class PlayerScript : MonoBehaviour
         // Instantiate the projectile at the fire point position and rotation
         Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
     }
+
+    /// <summary>
+    /// Used to detect collision with an is trigger object
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter(Collider other)
+    {
+        // If the player collides with an enemy bullet or boss bullet, lose a life and get stunned
+        if (other.CompareTag("Bullet") || other.CompareTag("BossBullet"))
+        {
+            LoseLife();
+            StartCoroutine(Stun());
+            Destroy(other.gameObject); // Destroy the bullet
+        }
+    }
+
 
 }

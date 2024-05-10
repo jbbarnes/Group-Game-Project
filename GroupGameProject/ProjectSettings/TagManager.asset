@@ -9,6 +9,8 @@ TagManager:
   - Boss
   - LeftPoint
   - RightPoint
+  - BossBullet
+  - Bullet
   layers:
   - Default
   - TransparentFX
